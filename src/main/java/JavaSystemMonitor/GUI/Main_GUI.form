@@ -57,6 +57,15 @@
             </Constraint>
           </Constraints>
         </Component>
+        <Component class="JavaSystemMonitor.GUI.CPU_Usage" name="cPU_Usage1">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="CPU Usage">
+                <Property name="tabTitle" type="java.lang.String" value="CPU Usage"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

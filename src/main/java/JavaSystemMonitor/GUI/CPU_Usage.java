@@ -6,33 +6,27 @@ import java.awt.BorderLayout;
 import java.lang.management.ManagementFactory;
 import java.util.Timer;
 import java.util.TimerTask;
-import org.knowm.xchart.PieChart;
+import org.knowm.xchart.DialChart;
 import org.knowm.xchart.XChartPanel;
-import org.knowm.xchart.style.PieStyler;
 
-public class MemoryUsage extends javax.swing.JPanel
+public class CPU_Usage extends javax.swing.JPanel
 {
 
-    private static final String FREE_MEMORY = "Free Memory";
+    private static final String CPU_USAGE_TITLE = "CPU Usage";
 
-    private static final String USED_MEMORY = "Used Memory";
+    private final DialChart dial;
 
-    private final PieChart memoryPieChart;
-
-    public MemoryUsage()
+    public CPU_Usage()
     {
         initComponents();
 
-        memoryPieChart = new PieChart(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT);
+        dial = new DialChart(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT);
 
-        memoryPieChart.getStyler().setAnnotationType(PieStyler.AnnotationType.Percentage);
-
-        memoryPieChart.addSeries(FREE_MEMORY, 0);
-        memoryPieChart.addSeries(USED_MEMORY, 0);
+        dial.addSeries(CPU_USAGE_TITLE, 0);
 
         setLayout(new BorderLayout());
 
-        final XChartPanel chartPanel = new XChartPanel(memoryPieChart);
+        final XChartPanel chartPanel = new XChartPanel(dial);
 
         add(chartPanel, BorderLayout.CENTER);
 
@@ -46,21 +40,17 @@ public class MemoryUsage extends javax.swing.JPanel
                 final OperatingSystemMXBean mbean
                         = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 
-                final double totalMemory = mbean.getTotalPhysicalMemorySize() / Constants.BYTES_TO_GIGABYTES;
+                final double CPU_Load = mbean.getSystemCpuLoad();
 
-                final double freeMemory = mbean.getFreePhysicalMemorySize() / Constants.BYTES_TO_GIGABYTES;
+                System.out.println("CPU: " + CPU_Load);
 
-                final double usedMemory = totalMemory - freeMemory;
-
-                memoryPieChart.updatePieSeries(USED_MEMORY, usedMemory);
-                memoryPieChart.updatePieSeries(FREE_MEMORY, freeMemory);
+                dial.removeSeries(CPU_USAGE_TITLE);
+                dial.addSeries(CPU_USAGE_TITLE, CPU_Load);
 
                 repaint();
+
             }
-
         }, 0, Constants.UPDATE_RATE_MS);
-
-        repaint();
     }
 
     @SuppressWarnings("unchecked")

@@ -15,11 +15,13 @@ public class Main_GUI extends javax.swing.JFrame
 
         javax.swing.JTabbedPane tabs = new javax.swing.JTabbedPane();
         memoryUsage1 = new JavaSystemMonitor.GUI.MemoryUsage();
+        cPU_Usage1 = new JavaSystemMonitor.GUI.CPU_Usage();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Java System Monitor");
 
         tabs.addTab("Memory Usage", memoryUsage1);
+        tabs.addTab("CPU Usage", cPU_Usage1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -40,6 +42,7 @@ public class Main_GUI extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private JavaSystemMonitor.GUI.CPU_Usage cPU_Usage1;
     private JavaSystemMonitor.GUI.MemoryUsage memoryUsage1;
     // End of variables declaration//GEN-END:variables
 }
