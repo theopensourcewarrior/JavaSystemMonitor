@@ -14,21 +14,13 @@ public class CPU_Usage extends javax.swing.JPanel
 
     private static final String CPU_USAGE_TITLE = "CPU Usage";
 
-    private final DialChart dial;
+    private DialChart dial;
 
     public CPU_Usage()
     {
         initComponents();
 
-        dial = new DialChart(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT);
-
-        dial.addSeries(CPU_USAGE_TITLE, 0);
-
-        setLayout(new BorderLayout());
-
-        final XChartPanel chartPanel = new XChartPanel(dial);
-
-        add(chartPanel, BorderLayout.CENTER);
+        addChartToPanel(Constants.DEFAULT_HEIGHT, Constants.DEFAULT_WIDTH);
 
         final Timer timer = new Timer();
 
@@ -37,20 +29,35 @@ public class CPU_Usage extends javax.swing.JPanel
             @Override
             public void run()
             {
-                final OperatingSystemMXBean mbean
-                        = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-
-                final double CPU_Load = mbean.getSystemCpuLoad();
-
-                System.out.println("CPU: " + CPU_Load);
-
-                dial.removeSeries(CPU_USAGE_TITLE);
-                dial.addSeries(CPU_USAGE_TITLE, CPU_Load);
-
-                repaint();
-
+                updateChart();
             }
         }, 0, Constants.UPDATE_RATE_MS);
+    }
+
+    private void addChartToPanel(int height, int width)
+    {
+        dial = new DialChart(width, height);
+
+        dial.addSeries(CPU_USAGE_TITLE, 0);
+
+        setLayout(new BorderLayout());
+
+        final XChartPanel chartPanel = new XChartPanel(dial);
+
+        add(chartPanel, BorderLayout.CENTER);
+    }
+
+    private void updateChart()
+    {
+        final OperatingSystemMXBean mbean
+                = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+
+        final double CPU_Load = mbean.getSystemCpuLoad();
+
+        dial.removeSeries(CPU_USAGE_TITLE);
+        dial.addSeries(CPU_USAGE_TITLE, CPU_Load);
+
+        repaint();
     }
 
     @SuppressWarnings("unchecked")

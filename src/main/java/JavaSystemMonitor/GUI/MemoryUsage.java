@@ -17,24 +17,13 @@ public class MemoryUsage extends javax.swing.JPanel
 
     private static final String USED_MEMORY = "Used Memory";
 
-    private final PieChart memoryPieChart;
+    private PieChart memoryPieChart;
 
     public MemoryUsage()
     {
         initComponents();
 
-        memoryPieChart = new PieChart(Constants.DEFAULT_WIDTH, Constants.DEFAULT_HEIGHT);
-
-        memoryPieChart.getStyler().setAnnotationType(PieStyler.AnnotationType.Percentage);
-
-        memoryPieChart.addSeries(FREE_MEMORY, 0);
-        memoryPieChart.addSeries(USED_MEMORY, 0);
-
-        setLayout(new BorderLayout());
-
-        final XChartPanel chartPanel = new XChartPanel(memoryPieChart);
-
-        add(chartPanel, BorderLayout.CENTER);
+        addChartToPanel(Constants.DEFAULT_HEIGHT, Constants.DEFAULT_WIDTH);
 
         final Timer timer = new Timer();
 
@@ -43,24 +32,49 @@ public class MemoryUsage extends javax.swing.JPanel
             @Override
             public void run()
             {
-                final OperatingSystemMXBean mbean
-                        = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-
-                final double totalMemory = mbean.getTotalPhysicalMemorySize() / Constants.BYTES_TO_GIGABYTES;
-
-                final double freeMemory = mbean.getFreePhysicalMemorySize() / Constants.BYTES_TO_GIGABYTES;
-
-                final double usedMemory = totalMemory - freeMemory;
-
-                memoryPieChart.updatePieSeries(USED_MEMORY, usedMemory);
-                memoryPieChart.updatePieSeries(FREE_MEMORY, freeMemory);
-
-                repaint();
+                updateChart();
             }
 
         }, 0, Constants.UPDATE_RATE_MS);
 
         repaint();
+    }
+
+    private void addChartToPanel(int height, int width)
+    {
+        setLayout(new BorderLayout());
+
+        memoryPieChart = new PieChart(width, height);
+
+        memoryPieChart.getStyler().setAnnotationType(PieStyler.AnnotationType.Percentage);
+
+        memoryPieChart.addSeries(FREE_MEMORY, 0);
+        memoryPieChart.addSeries(USED_MEMORY, 0);
+
+        final XChartPanel chartPanel = new XChartPanel(memoryPieChart);
+
+        add(chartPanel, BorderLayout.CENTER);
+
+        updateChart();
+
+    }
+
+    private void updateChart()
+    {
+        final OperatingSystemMXBean mbean
+                = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+
+        final double totalMemory = mbean.getTotalPhysicalMemorySize() / Constants.BYTES_TO_GIGABYTES;
+
+        final double freeMemory = mbean.getFreePhysicalMemorySize() / Constants.BYTES_TO_GIGABYTES;
+
+        final double usedMemory = totalMemory - freeMemory;
+
+        memoryPieChart.updatePieSeries(USED_MEMORY, usedMemory);
+        memoryPieChart.updatePieSeries(FREE_MEMORY, freeMemory);
+
+        repaint();
+        updateUI();
     }
 
     @SuppressWarnings("unchecked")

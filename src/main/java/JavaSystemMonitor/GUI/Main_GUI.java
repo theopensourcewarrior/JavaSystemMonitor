@@ -6,6 +6,7 @@ public class Main_GUI extends javax.swing.JFrame
     public Main_GUI()
     {
         initComponents();
+
     }
 
     @SuppressWarnings("unchecked")
@@ -14,35 +15,32 @@ public class Main_GUI extends javax.swing.JFrame
     {
 
         javax.swing.JTabbedPane tabs = new javax.swing.JTabbedPane();
-        memoryUsage1 = new JavaSystemMonitor.GUI.MemoryUsage();
-        cPU_Usage1 = new JavaSystemMonitor.GUI.CPU_Usage();
+        memoryUsagePanel = new JavaSystemMonitor.GUI.MemoryUsage();
+        CPU_UsagePanel = new JavaSystemMonitor.GUI.CPU_Usage();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Java System Monitor");
 
-        tabs.addTab("Memory Usage", memoryUsage1);
-        tabs.addTab("CPU Usage", cPU_Usage1);
+        tabs.addTab("Memory Usage", memoryUsagePanel);
+        tabs.addTab("CPU Usage", CPU_UsagePanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 658, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JavaSystemMonitor.GUI.CPU_Usage cPU_Usage1;
-    private JavaSystemMonitor.GUI.MemoryUsage memoryUsage1;
+    private JavaSystemMonitor.GUI.CPU_Usage CPU_UsagePanel;
+    private JavaSystemMonitor.GUI.MemoryUsage memoryUsagePanel;
     // End of variables declaration//GEN-END:variables
+
 }
