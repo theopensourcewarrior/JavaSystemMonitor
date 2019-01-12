@@ -15,24 +15,24 @@ public class Main_GUI extends javax.swing.JFrame
     {
 
         javax.swing.JTabbedPane tabs = new javax.swing.JTabbedPane();
-        memoryUsagePanel = new JavaSystemMonitor.GUI.MemoryUsage();
         CPU_UsagePanel = new JavaSystemMonitor.GUI.CPU_Usage();
+        memoryUsagePanel = new JavaSystemMonitor.GUI.MemoryUsage();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Java System Monitor");
 
-        tabs.addTab("Memory Usage", memoryUsagePanel);
         tabs.addTab("CPU Usage", CPU_UsagePanel);
+        tabs.addTab("Memory Usage", memoryUsagePanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+            .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
+            .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
         );
 
         pack();
