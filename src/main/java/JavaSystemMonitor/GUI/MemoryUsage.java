@@ -3,6 +3,7 @@ package JavaSystemMonitor.GUI;
 import JavaSystemMonitor.Constants;
 import com.sun.management.OperatingSystemMXBean;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.lang.management.ManagementFactory;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -47,6 +48,13 @@ public class MemoryUsage extends javax.swing.JPanel
         memoryPieChart = new PieChart(width, height);
 
         memoryPieChart.getStyler().setAnnotationType(PieStyler.AnnotationType.Percentage);
+
+        final Color[] colors =
+        {
+            Color.green, Color.red
+        };
+
+        memoryPieChart.getStyler().setSeriesColors(colors);
 
         memoryPieChart.addSeries(FREE_MEMORY, 0);
         memoryPieChart.addSeries(USED_MEMORY, 0);
