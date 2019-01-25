@@ -16,7 +16,7 @@
             <plugin>
                 <!-- Build an all inclusive Jar file for stand alone execution -->
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.1.1</version>
                 <configuration>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
