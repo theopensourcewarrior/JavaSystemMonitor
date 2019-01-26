@@ -29,7 +29,7 @@ public class DiskEntry extends javax.swing.JPanel
 
             usageMeter.setStringPainted(true);
 
-            NumberFormat nf = NumberFormat.getPercentInstance();
+            final NumberFormat nf = NumberFormat.getPercentInstance();
 
             usageMeter.setString(nf.format(percentUsed / 100.0));
         }

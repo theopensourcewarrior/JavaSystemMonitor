@@ -60,7 +60,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="JavaSystemMonitor.GUI.Disk.DiskUsage" name="diskUsage1">
+        <Component class="JavaSystemMonitor.GUI.Disk.DiskUsage" name="diskUsagePanel">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Disk Usage">

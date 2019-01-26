@@ -18,6 +18,7 @@ public class DiskUsage extends javax.swing.JPanel
     public DiskUsage()
     {
         initComponents();
+
         final Timer timer = new Timer();
 
         timer.scheduleAtFixedRate(new TimerTask()
@@ -44,9 +45,7 @@ public class DiskUsage extends javax.swing.JPanel
             try
             {
                 FileStore store = Files.getFileStore(root);
-
                 panel.add(new DiskEntry(store));
-
             }
             catch (IOException ex)
             {
