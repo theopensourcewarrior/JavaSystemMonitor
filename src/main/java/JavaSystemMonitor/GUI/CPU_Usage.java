@@ -52,7 +52,7 @@ public class CPU_Usage extends javax.swing.JPanel
         final OperatingSystemMXBean mbean
                 = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 
-        final double CPU_Load = mbean.getSystemCpuLoad();
+        final double CPU_Load = Math.min(1.0, Math.max(0.0, mbean.getSystemCpuLoad()));
 
         dial.removeSeries(CPU_USAGE_TITLE);
         dial.addSeries(CPU_USAGE_TITLE, CPU_Load);
