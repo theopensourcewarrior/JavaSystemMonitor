@@ -45,6 +45,7 @@ public class CPU_Usage extends javax.swing.JPanel
         final XChartPanel chartPanel = new XChartPanel(dial);
 
         add(chartPanel, BorderLayout.CENTER);
+
     }
 
     private void updateChart()
