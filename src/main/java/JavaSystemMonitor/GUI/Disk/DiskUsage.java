@@ -76,7 +76,7 @@ public class DiskUsage extends javax.swing.JPanel
 
         panel = new javax.swing.JPanel();
 
-        panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Disks"));
+        panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Disk Utilization"));
 
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
