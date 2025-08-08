@@ -1,93 +1,60 @@
 package JavaSystemMonitor.GUI.Disk;
 
+import JavaSystemMonitor.Constants;
+import java.awt.BorderLayout;
 import java.io.IOException;
 import java.nio.file.FileStore;
-import java.text.NumberFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JPanel;
+import org.knowm.xchart.PieChart;
+import org.knowm.xchart.XChartPanel;
+import org.knowm.xchart.style.PieStyler;
 
-public class DiskEntry extends javax.swing.JPanel
-{
+public class DiskEntry extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
     @SuppressWarnings("this-escape")
-    public DiskEntry(FileStore store)
-    {
+    public DiskEntry(FileStore store) {
         initComponents();
+        addChartToPanel(Constants.DEFAULT_HEIGHT / 2, Constants.DEFAULT_WIDTH / 2, store);
+    }
 
-        diskName.setText(store.name());
+    private void addChartToPanel(int height, int width, FileStore store) {
+        setLayout(new BorderLayout());
 
-        try
-        {
-            final long totalSpace = store.getTotalSpace();
+        PieChart chart = new PieChart(width, height);
+        chart.setTitle(store.name());
+        chart.getStyler().setLegendVisible(true);
+        chart.getStyler().setLabelType(PieStyler.LabelType.Percentage);
 
-            final long unUsedSpace = store.getUnallocatedSpace();
+        try {
+            long totalSpace = store.getTotalSpace();
+            long unUsedSpace = store.getUnallocatedSpace();
+            long usedSpace = totalSpace - unUsedSpace;
 
-            final long usedSpace = totalSpace - unUsedSpace;
-
-            final double percentUsed = 100.0 * (usedSpace / (double) totalSpace);
-
-            usageMeter.setValue((int) percentUsed);
-
-            usageMeter.setStringPainted(true);
-
-            final NumberFormat nf = NumberFormat.getPercentInstance();
-
-            usageMeter.setString(nf.format(percentUsed / 100.0));
-        }
-        catch (IOException ex)
-        {
+            chart.addSeries("Used", usedSpace);
+            chart.addSeries("Free", unUsedSpace);
+        } catch (IOException ex) {
             Logger.getLogger(DiskEntry.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        XChartPanel<PieChart> chartPanel = new XChartPanel<>(chart);
+        add(chartPanel, BorderLayout.CENTER);
     }
 
-    @SuppressWarnings(
-            {
-                "unchecked", "this-escape"
-            })
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
-
-        javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
-        diskName = new javax.swing.JLabel();
-        usageMeter = new javax.swing.JProgressBar();
-
-        jLabel1.setText("Disk:");
-
-        diskName.setText("jLabel2");
-
+    @SuppressWarnings({"unchecked", "this-escape"})
+    private void initComponents() {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(usageMeter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(diskName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(diskName))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(usageMeter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 300, Short.MAX_VALUE)
         );
-    }// </editor-fold>//GEN-END:initComponents
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel diskName;
-    private javax.swing.JProgressBar usageMeter;
-    // End of variables declaration//GEN-END:variables
+    }
 }
