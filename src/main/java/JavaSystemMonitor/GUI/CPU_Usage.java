@@ -38,7 +38,7 @@ public class CPU_Usage extends javax.swing.JPanel
     {
         dial = new DialChart(width, height);
 
-        dial.addSeries(CPU_USAGE_TITLE, 0);
+        dial.addSeries(CPU_USAGE_TITLE, 0, CPU_USAGE_TITLE);
 
         setLayout(new BorderLayout());
 
@@ -56,7 +56,7 @@ public class CPU_Usage extends javax.swing.JPanel
         final double CPU_Load = Math.min(1.0, Math.max(0.0, mbean.getSystemCpuLoad()));
 
         dial.removeSeries(CPU_USAGE_TITLE);
-        dial.addSeries(CPU_USAGE_TITLE, CPU_Load);
+        dial.addSeries(CPU_USAGE_TITLE, CPU_Load, CPU_USAGE_TITLE);
 
         repaint();
     }
