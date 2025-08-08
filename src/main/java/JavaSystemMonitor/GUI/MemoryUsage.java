@@ -40,7 +40,8 @@ public class MemoryUsage extends javax.swing.JPanel
 
         memoryPieChart = new PieChart(width, height);
 
-        memoryPieChart.getStyler().setLabelType(PieStyler.LabelType.Name);
+        memoryPieChart.getStyler().setLegendVisible(true);
+        memoryPieChart.getStyler().setLabelType(PieStyler.LabelType.Percentage);
 
         final Color[] colors =
         {
