@@ -40,6 +40,7 @@ public class MemoryUsage extends javax.swing.JPanel
 
         memoryPieChart = new PieChart(width, height);
 
+        memoryPieChart.getStyler().setLegendVisible(true);
         memoryPieChart.getStyler().setLabelType(PieStyler.LabelType.Percentage);
 
         final Color[] colors =
@@ -65,17 +66,34 @@ public class MemoryUsage extends javax.swing.JPanel
         final OperatingSystemMXBean mbean
                 = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 
-        final double totalMemory = mbean.getTotalMemorySize() / Constants.BYTES_TO_GIGABYTES;
+        final long totalMemory = mbean.getTotalMemorySize();
 
-        final double freeMemory = mbean.getFreeMemorySize() / Constants.BYTES_TO_GIGABYTES;
+        final long freeMemory = mbean.getFreeMemorySize();
 
-        final double usedMemory = totalMemory - freeMemory;
+        final long usedMemory = totalMemory - freeMemory;
 
         memoryPieChart.updatePieSeries(USED_MEMORY, usedMemory);
         memoryPieChart.updatePieSeries(FREE_MEMORY, freeMemory);
 
+        memoryPieChart.getSeriesMap().get(USED_MEMORY).setLabel(
+                String.format("%s: %s", USED_MEMORY, formatMemory(usedMemory)));
+        memoryPieChart.getSeriesMap().get(FREE_MEMORY).setLabel(
+                String.format("%s: %s", FREE_MEMORY, formatMemory(freeMemory)));
+
         revalidate();
         repaint();
+    }
+
+    private String formatMemory(long bytes)
+    {
+        if (bytes >= Constants.BYTES_TO_GIGABYTES)
+        {
+            return String.format("%.2f GB", bytes / (double) Constants.BYTES_TO_GIGABYTES);
+        }
+        else
+        {
+            return String.format("%.2f MB", bytes / (double) Constants.BYTES_TO_MEGABYTES);
+        }
     }
 
     @Override
