@@ -24,6 +24,7 @@ public class Main_GUI extends javax.swing.JFrame
         CPU_UsagePanel = new JavaSystemMonitor.GUI.CPU_Usage();
         memoryUsagePanel = new JavaSystemMonitor.GUI.MemoryUsage();
         diskUsagePanel = new JavaSystemMonitor.GUI.Disk.DiskUsage();
+        networkUsagePanel = new JavaSystemMonitor.GUI.NetworkUsage();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Java System Monitor");
@@ -31,6 +32,7 @@ public class Main_GUI extends javax.swing.JFrame
         tabs.addTab("CPU Usage", CPU_UsagePanel);
         tabs.addTab("Memory Usage", memoryUsagePanel);
         tabs.addTab("Disk Usage", diskUsagePanel);
+        tabs.addTab("Network Usage", networkUsagePanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -50,6 +52,7 @@ public class Main_GUI extends javax.swing.JFrame
     private JavaSystemMonitor.GUI.CPU_Usage CPU_UsagePanel;
     private JavaSystemMonitor.GUI.Disk.DiskUsage diskUsagePanel;
     private JavaSystemMonitor.GUI.MemoryUsage memoryUsagePanel;
+    private JavaSystemMonitor.GUI.NetworkUsage networkUsagePanel;
     // End of variables declaration//GEN-END:variables
 
 }
