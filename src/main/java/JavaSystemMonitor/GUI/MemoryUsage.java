@@ -5,8 +5,7 @@ import com.sun.management.OperatingSystemMXBean;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.lang.management.ManagementFactory;
-import java.util.Timer;
-import java.util.TimerTask;
+import javax.swing.Timer;
 import org.knowm.xchart.PieChart;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.style.PieStyler;
@@ -22,6 +21,8 @@ public class MemoryUsage extends javax.swing.JPanel
 
     private transient PieChart memoryPieChart;
 
+    private final Timer timer;
+
     @SuppressWarnings("this-escape")
     public MemoryUsage()
     {
@@ -29,19 +30,8 @@ public class MemoryUsage extends javax.swing.JPanel
 
         addChartToPanel(Constants.DEFAULT_HEIGHT, Constants.DEFAULT_WIDTH);
 
-        final Timer timer = new Timer();
-
-        timer.scheduleAtFixedRate(new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                updateChart();
-            }
-
-        }, 0, Constants.UPDATE_RATE_MS);
-
-        repaint();
+        timer = new Timer(Constants.UPDATE_RATE_MS, e -> updateChart());
+        timer.setInitialDelay(0);
     }
 
     private void addChartToPanel(int height, int width)
@@ -84,8 +74,22 @@ public class MemoryUsage extends javax.swing.JPanel
         memoryPieChart.updatePieSeries(USED_MEMORY, usedMemory);
         memoryPieChart.updatePieSeries(FREE_MEMORY, freeMemory);
 
+        revalidate();
         repaint();
-        updateUI();
+    }
+
+    @Override
+    public void addNotify()
+    {
+        super.addNotify();
+        timer.start();
+    }
+
+    @Override
+    public void removeNotify()
+    {
+        timer.stop();
+        super.removeNotify();
     }
 
     @SuppressWarnings(
