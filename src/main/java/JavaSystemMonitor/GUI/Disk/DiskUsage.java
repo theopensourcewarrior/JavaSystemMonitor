@@ -15,6 +15,9 @@ import javax.swing.BoxLayout;
 public class DiskUsage extends javax.swing.JPanel
 {
 
+    private static final long serialVersionUID = 1L;
+
+    @SuppressWarnings("this-escape")
     public DiskUsage()
     {
         initComponents();
@@ -54,7 +57,10 @@ public class DiskUsage extends javax.swing.JPanel
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings(
+            {
+                "unchecked", "this-escape"
+            })
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()
     {

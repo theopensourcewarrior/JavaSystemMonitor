@@ -14,12 +14,15 @@ import org.knowm.xchart.style.PieStyler;
 public class MemoryUsage extends javax.swing.JPanel
 {
 
+    private static final long serialVersionUID = 1L;
+
     private static final String FREE_MEMORY = "Free Memory";
 
     private static final String USED_MEMORY = "Used Memory";
 
-    private PieChart memoryPieChart;
+    private transient PieChart memoryPieChart;
 
+    @SuppressWarnings("this-escape")
     public MemoryUsage()
     {
         initComponents();
@@ -59,7 +62,7 @@ public class MemoryUsage extends javax.swing.JPanel
         memoryPieChart.addSeries(FREE_MEMORY, 0);
         memoryPieChart.addSeries(USED_MEMORY, 0);
 
-        final XChartPanel chartPanel = new XChartPanel(memoryPieChart);
+        final XChartPanel<PieChart> chartPanel = new XChartPanel<>(memoryPieChart);
 
         add(chartPanel, BorderLayout.CENTER);
 
@@ -72,9 +75,9 @@ public class MemoryUsage extends javax.swing.JPanel
         final OperatingSystemMXBean mbean
                 = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 
-        final double totalMemory = mbean.getTotalPhysicalMemorySize() / Constants.BYTES_TO_GIGABYTES;
+        final double totalMemory = mbean.getTotalMemorySize() / Constants.BYTES_TO_GIGABYTES;
 
-        final double freeMemory = mbean.getFreePhysicalMemorySize() / Constants.BYTES_TO_GIGABYTES;
+        final double freeMemory = mbean.getFreeMemorySize() / Constants.BYTES_TO_GIGABYTES;
 
         final double usedMemory = totalMemory - freeMemory;
 
@@ -85,7 +88,10 @@ public class MemoryUsage extends javax.swing.JPanel
         updateUI();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings(
+            {
+                "unchecked", "this-escape"
+            })
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
