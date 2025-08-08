@@ -57,7 +57,10 @@ public class DiskUsage extends javax.swing.JPanel
         }
     }
 
-    @SuppressWarnings({"unchecked", "this-escape"})
+    @SuppressWarnings(
+            {
+                "unchecked", "this-escape"
+            })
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()
     {

@@ -88,7 +88,10 @@ public class MemoryUsage extends javax.swing.JPanel
         updateUI();
     }
 
-    @SuppressWarnings({"unchecked", "this-escape"})
+    @SuppressWarnings(
+            {
+                "unchecked", "this-escape"
+            })
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 

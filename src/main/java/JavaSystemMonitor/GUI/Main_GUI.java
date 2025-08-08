@@ -12,7 +12,10 @@ public class Main_GUI extends javax.swing.JFrame
 
     }
 
-    @SuppressWarnings({"unchecked", "this-escape"})
+    @SuppressWarnings(
+            {
+                "unchecked", "this-escape"
+            })
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()
     {
