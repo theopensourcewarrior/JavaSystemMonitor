@@ -13,9 +13,8 @@ import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.style.markers.SeriesMarkers;
 
-public class NetworkUsage extends javax.swing.JPanel {
-
-    private static final long serialVersionUID = 1L;
+public class NetworkUsage extends javax.swing.JPanel
+{
 
     private transient XYChart chart;
 
@@ -29,8 +28,8 @@ public class NetworkUsage extends javax.swing.JPanel {
     private long previousBytesSent;
     private int time = 0;
 
-    @SuppressWarnings("this-escape")
-    public NetworkUsage() {
+    public NetworkUsage()
+    {
         initComponents();
 
         addChartToPanel(Constants.DEFAULT_HEIGHT, Constants.DEFAULT_WIDTH);
@@ -43,18 +42,32 @@ public class NetworkUsage extends javax.swing.JPanel {
         timer.setInitialDelay(0);
     }
 
-    private void addChartToPanel(int height, int width) {
+    private void addChartToPanel(int height, int width)
+    {
         setLayout(new BorderLayout());
 
         chart = new XYChart(width, height);
-        chart.addSeries("Download KB/s", new double[]{0}, new double[]{0}).setMarker(SeriesMarkers.NONE);
-        chart.addSeries("Upload KB/s", new double[]{0}, new double[]{0}).setMarker(SeriesMarkers.NONE);
+        chart.addSeries("Download KB/s", new double[]
+                {
+                    0
+        }, new double[]
+                {
+                    0
+        }).setMarker(SeriesMarkers.NONE);
+        chart.addSeries("Upload KB/s", new double[]
+                {
+                    0
+        }, new double[]
+                {
+                    0
+        }).setMarker(SeriesMarkers.NONE);
 
         final XChartPanel<XYChart> chartPanel = new XChartPanel<>(chart);
         add(chartPanel, BorderLayout.CENTER);
     }
 
-    private void updateChart() {
+    private void updateChart()
+    {
         final long[] totals = readNetworkTotals();
         final long recv = totals[0];
         final long sent = totals[1];
@@ -71,7 +84,8 @@ public class NetworkUsage extends javax.swing.JPanel {
         uploadData.add(deltaSent / 1024.0);   // KB/s
 
         final int maxPoints = 60;
-        if (xData.size() > maxPoints) {
+        if (xData.size() > maxPoints)
+        {
             xData.remove(0);
             downloadData.remove(0);
             uploadData.remove(0);
@@ -84,85 +98,122 @@ public class NetworkUsage extends javax.swing.JPanel {
         repaint();
     }
 
-    private long[] readNetworkTotals() {
+    private long[] readNetworkTotals()
+    {
         final String os = System.getProperty("os.name").toLowerCase();
-        if (os.contains("linux")) {
+        if (os.contains("linux"))
+        {
             return readLinuxTotals();
-        } else if (os.contains("mac") || os.contains("darwin")) {
+        }
+        else if (os.contains("mac") || os.contains("darwin"))
+        {
             return readMacTotals();
-        } else if (os.contains("win")) {
+        }
+        else if (os.contains("win"))
+        {
             return readWindowsTotals();
         }
-        return new long[]{0, 0};
+        return new long[]
+        {
+            0, 0
+        };
     }
 
-    private long[] readLinuxTotals() {
+    private long[] readLinuxTotals()
+    {
         long rx = 0;
         long tx = 0;
-        try (BufferedReader br = new BufferedReader(new FileReader("/proc/net/dev"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("/proc/net/dev")))
+        {
             br.readLine();
             br.readLine();
             String line;
-            while ((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null)
+            {
                 line = line.trim();
-                if (line.isEmpty()) {
+                if (line.isEmpty())
+                {
                     continue;
                 }
                 final String[] parts = line.split(":");
-                if (parts.length < 2) {
+                if (parts.length < 2)
+                {
                     continue;
                 }
                 final String[] tokens = parts[1].trim().split("\\s+");
-                if (tokens.length >= 9) {
+                if (tokens.length >= 9)
+                {
                     rx += parseLong(tokens[0]);
                     tx += parseLong(tokens[8]);
                 }
             }
-        } catch (IOException ignored) {
         }
-        return new long[]{rx, tx};
+        catch (IOException ignored)
+        {
+        }
+        return new long[]
+        {
+            rx, tx
+        };
     }
 
-    private long[] readMacTotals() {
+    private long[] readMacTotals()
+    {
         long rx = 0;
         long tx = 0;
         final ProcessBuilder pb = new ProcessBuilder("netstat", "-ibn");
-        try {
+        try
+        {
             final Process p = pb.start();
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream())))
+            {
                 br.readLine(); // header
                 String line;
-                while ((line = br.readLine()) != null) {
+                while ((line = br.readLine()) != null)
+                {
                     line = line.trim();
-                    if (line.isEmpty()) {
+                    if (line.isEmpty())
+                    {
                         continue;
                     }
                     final String[] tokens = line.split("\\s+");
-                    if (tokens.length >= 11) {
+                    if (tokens.length >= 11)
+                    {
                         rx += parseLong(tokens[9]);
                         tx += parseLong(tokens[10]);
                     }
                 }
             }
-        } catch (IOException ignored) {
         }
-        return new long[]{rx, tx};
+        catch (IOException ignored)
+        {
+        }
+        return new long[]
+        {
+            rx, tx
+        };
     }
 
-    private long[] readWindowsTotals() {
+    private long[] readWindowsTotals()
+    {
         long rx = 0;
         long tx = 0;
         final ProcessBuilder pb = new ProcessBuilder("netstat", "-e");
         pb.redirectErrorStream(true);
-        try {
+        try
+        {
             final Process p = pb.start();
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream())))
+            {
                 String line;
-                while ((line = br.readLine()) != null) {
+                while ((line = br.readLine()) != null)
+                {
                     line = line.trim();
-                    if (line.startsWith("Bytes")) {
+                    if (line.startsWith("Bytes"))
+                    {
                         final String[] tokens = line.split("\\s+");
-                        if (tokens.length >= 3) {
+                        if (tokens.length >= 3)
+                        {
                             rx = parseLong(tokens[1]);
                             tx = parseLong(tokens[2]);
                             break;
@@ -170,43 +221,63 @@ public class NetworkUsage extends javax.swing.JPanel {
                     }
                 }
             }
-        } catch (IOException ignored) {
         }
-        return new long[]{rx, tx};
+        catch (IOException ignored)
+        {
+        }
+        return new long[]
+        {
+            rx, tx
+        };
     }
 
-    private long parseLong(String s) {
-        try {
+    private long parseLong(String s)
+    {
+        try
+        {
             return Long.parseLong(s);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e)
+        {
             return 0;
         }
     }
 
     @Override
-    public void addNotify() {
+    public void addNotify()
+    {
         super.addNotify();
         timer.start();
     }
 
     @Override
-    public void removeNotify() {
+    public void removeNotify()
+    {
         timer.stop();
         super.removeNotify();
     }
 
-    @SuppressWarnings({"unchecked", "this-escape"})
-    private void initComponents() {
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The
+     * content of this method is always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents()
+    {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
-    }
+    }// </editor-fold>//GEN-END:initComponents
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // End of variables declaration//GEN-END:variables
 }
