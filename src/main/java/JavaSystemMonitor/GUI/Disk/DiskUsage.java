@@ -6,8 +6,7 @@ import java.nio.file.FileStore;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Timer;
-import java.util.TimerTask;
+import javax.swing.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
@@ -15,21 +14,14 @@ import javax.swing.BoxLayout;
 public class DiskUsage extends javax.swing.JPanel
 {
 
+    private final Timer timer;
+
     public DiskUsage()
     {
         initComponents();
 
-        final Timer timer = new Timer();
-
-        timer.scheduleAtFixedRate(new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                updateChart();
-            }
-
-        }, 0, Constants.UPDATE_RATE_MS);
+        timer = new Timer(Constants.UPDATE_RATE_MS, e -> updateChart());
+        timer.setInitialDelay(0);
 
         updateChart();
     }
@@ -52,6 +44,23 @@ public class DiskUsage extends javax.swing.JPanel
                 Logger.getLogger(DiskEntry.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    @Override
+    public void addNotify()
+    {
+        super.addNotify();
+        timer.start();
+    }
+
+    @Override
+    public void removeNotify()
+    {
+        timer.stop();
+        super.removeNotify();
     }
 
     @SuppressWarnings("unchecked")

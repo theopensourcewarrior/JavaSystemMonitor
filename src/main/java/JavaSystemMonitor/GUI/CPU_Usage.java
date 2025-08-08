@@ -4,8 +4,7 @@ import JavaSystemMonitor.Constants;
 import com.sun.management.OperatingSystemMXBean;
 import java.awt.BorderLayout;
 import java.lang.management.ManagementFactory;
-import java.util.Timer;
-import java.util.TimerTask;
+import javax.swing.Timer;
 import org.knowm.xchart.DialChart;
 import org.knowm.xchart.XChartPanel;
 
@@ -15,6 +14,7 @@ public class CPU_Usage extends javax.swing.JPanel
     private static final String CPU_USAGE_TITLE = "CPU Usage";
 
     private DialChart dial;
+    private final Timer timer;
 
     public CPU_Usage()
     {
@@ -22,16 +22,8 @@ public class CPU_Usage extends javax.swing.JPanel
 
         addChartToPanel(Constants.DEFAULT_HEIGHT, Constants.DEFAULT_WIDTH);
 
-        final Timer timer = new Timer();
-
-        timer.scheduleAtFixedRate(new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                updateChart();
-            }
-        }, 0, Constants.UPDATE_RATE_MS);
+        timer = new Timer(Constants.UPDATE_RATE_MS, e -> updateChart());
+        timer.setInitialDelay(0);
     }
 
     private void addChartToPanel(int height, int width)
@@ -59,6 +51,20 @@ public class CPU_Usage extends javax.swing.JPanel
         dial.addSeries(CPU_USAGE_TITLE, CPU_Load);
 
         repaint();
+    }
+
+    @Override
+    public void addNotify()
+    {
+        super.addNotify();
+        timer.start();
+    }
+
+    @Override
+    public void removeNotify()
+    {
+        timer.stop();
+        super.removeNotify();
     }
 
     @SuppressWarnings("unchecked")
