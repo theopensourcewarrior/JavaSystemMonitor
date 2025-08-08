@@ -15,6 +15,7 @@ import org.knowm.xchart.style.markers.SeriesMarkers;
 
 public class NetworkUsage extends javax.swing.JPanel
 {
+    private static final long serialVersionUID = 1L;
 
     private transient XYChart chart;
 
@@ -26,8 +27,10 @@ public class NetworkUsage extends javax.swing.JPanel
 
     private long previousBytesRecv;
     private long previousBytesSent;
-    private int time = 0;
 
+    private static final int HISTORY_SECONDS = 60;
+
+    @SuppressWarnings("this-escape")
     public NetworkUsage()
     {
         initComponents();
@@ -47,20 +50,10 @@ public class NetworkUsage extends javax.swing.JPanel
         setLayout(new BorderLayout());
 
         chart = new XYChart(width, height);
-        chart.addSeries("Download KB/s", new double[]
-                {
-                    0
-        }, new double[]
-                {
-                    0
-        }).setMarker(SeriesMarkers.NONE);
-        chart.addSeries("Upload KB/s", new double[]
-                {
-                    0
-        }, new double[]
-                {
-                    0
-        }).setMarker(SeriesMarkers.NONE);
+        chart.setYAxisTitle("Data Rate (bps)");
+        chart.setXAxisTitle("Seconds");
+        chart.addSeries("Download", new double[]{0}, new double[]{0}).setMarker(SeriesMarkers.NONE);
+        chart.addSeries("Upload", new double[]{0}, new double[]{0}).setMarker(SeriesMarkers.NONE);
 
         final XChartPanel<XYChart> chartPanel = new XChartPanel<>(chart);
         add(chartPanel, BorderLayout.CENTER);
@@ -78,21 +71,74 @@ public class NetworkUsage extends javax.swing.JPanel
         previousBytesRecv = recv;
         previousBytesSent = sent;
 
-        time++;
-        xData.add((double) time);
-        downloadData.add(deltaRecv / 1024.0); // KB/s
-        uploadData.add(deltaSent / 1024.0);   // KB/s
+        downloadData.add(deltaRecv * 8.0); // bits per second
+        uploadData.add(deltaSent * 8.0);    // bits per second
 
-        final int maxPoints = 60;
-        if (xData.size() > maxPoints)
+        if (downloadData.size() > HISTORY_SECONDS)
         {
-            xData.remove(0);
             downloadData.remove(0);
             uploadData.remove(0);
         }
 
-        chart.updateXYSeries("Download KB/s", xData, downloadData, null);
-        chart.updateXYSeries("Upload KB/s", xData, uploadData, null);
+        xData.clear();
+        for (int i = 0; i < downloadData.size(); i++)
+        {
+            xData.add((double) i);
+        }
+
+        double maxRate = 0;
+        for (double d : downloadData)
+        {
+            if (d > maxRate)
+            {
+                maxRate = d;
+            }
+        }
+        for (double d : uploadData)
+        {
+            if (d > maxRate)
+            {
+                maxRate = d;
+            }
+        }
+
+        double scale;
+        String unit;
+        if (maxRate >= 1_000_000_000)
+        {
+            scale = 1_000_000_000.0;
+            unit = "Gbps";
+        }
+        else if (maxRate >= 1_000_000)
+        {
+            scale = 1_000_000.0;
+            unit = "Mbps";
+        }
+        else if (maxRate >= 1_000)
+        {
+            scale = 1_000.0;
+            unit = "Kbps";
+        }
+        else
+        {
+            scale = 1.0;
+            unit = "bps";
+        }
+
+        final List<Double> scaledDownload = new ArrayList<>(downloadData.size());
+        for (double d : downloadData)
+        {
+            scaledDownload.add(d / scale);
+        }
+        final List<Double> scaledUpload = new ArrayList<>(uploadData.size());
+        for (double d : uploadData)
+        {
+            scaledUpload.add(d / scale);
+        }
+
+        chart.setYAxisTitle("Data Rate (" + unit + ")");
+        chart.updateXYSeries("Download", xData, scaledDownload, null);
+        chart.updateXYSeries("Upload", xData, scaledUpload, null);
 
         revalidate();
         repaint();
