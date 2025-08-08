@@ -3,25 +3,28 @@ package JavaSystemMonitor.GUI;
 import JavaSystemMonitor.Constants;
 import com.sun.management.OperatingSystemMXBean;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.lang.management.ManagementFactory;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.Timer;
-import org.knowm.xchart.PieChart;
 import org.knowm.xchart.XChartPanel;
-import org.knowm.xchart.style.PieStyler;
+import org.knowm.xchart.XYChart;
+import org.knowm.xchart.style.markers.SeriesMarkers;
 
 public class MemoryUsage extends javax.swing.JPanel
 {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String FREE_MEMORY = "Free Memory";
+    private static final int HISTORY_SECONDS = 60;
 
-    private static final String USED_MEMORY = "Used Memory";
-
-    private transient PieChart memoryPieChart;
+    private transient XYChart chart;
 
     private final Timer timer;
+
+    private final transient List<Double> xData = new ArrayList<>();
+
+    private final transient List<Double> usedData = new ArrayList<>();
 
     @SuppressWarnings("this-escape")
     public MemoryUsage()
@@ -38,27 +41,19 @@ public class MemoryUsage extends javax.swing.JPanel
     {
         setLayout(new BorderLayout());
 
-        memoryPieChart = new PieChart(width, height);
+        chart = new XYChart(width, height);
+        chart.setYAxisTitle("Memory");
+        chart.setXAxisTitle("Seconds");
+        chart.addSeries("Used", new double[]
+                {
+                    0
+        }, new double[]
+                {
+                    0
+        }).setMarker(SeriesMarkers.NONE);
 
-        memoryPieChart.getStyler().setLegendVisible(true);
-        memoryPieChart.getStyler().setLabelType(PieStyler.LabelType.Percentage);
-
-        final Color[] colors =
-        {
-            Color.green, Color.red
-        };
-
-        memoryPieChart.getStyler().setSeriesColors(colors);
-
-        memoryPieChart.addSeries(FREE_MEMORY, 0);
-        memoryPieChart.addSeries(USED_MEMORY, 0);
-
-        final XChartPanel<PieChart> chartPanel = new XChartPanel<>(memoryPieChart);
-
+        final XChartPanel<XYChart> chartPanel = new XChartPanel<>(chart);
         add(chartPanel, BorderLayout.CENTER);
-
-        updateChart();
-
     }
 
     private void updateChart()
@@ -67,33 +62,54 @@ public class MemoryUsage extends javax.swing.JPanel
                 = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 
         final long totalMemory = mbean.getTotalMemorySize();
-
         final long freeMemory = mbean.getFreeMemorySize();
-
         final long usedMemory = totalMemory - freeMemory;
 
-        memoryPieChart.updatePieSeries(USED_MEMORY, usedMemory);
-        memoryPieChart.updatePieSeries(FREE_MEMORY, freeMemory);
-
-        memoryPieChart.getSeriesMap().get(USED_MEMORY).setLabel(
-                String.format("%s: %s", USED_MEMORY, formatMemory(usedMemory)));
-        memoryPieChart.getSeriesMap().get(FREE_MEMORY).setLabel(
-                String.format("%s: %s", FREE_MEMORY, formatMemory(freeMemory)));
-
-        revalidate();
-        repaint();
-    }
-
-    private String formatMemory(long bytes)
-    {
-        if (bytes >= Constants.BYTES_TO_GIGABYTES)
+        usedData.add((double) usedMemory);
+        if (usedData.size() > HISTORY_SECONDS)
         {
-            return String.format("%.2f GB", bytes / (double) Constants.BYTES_TO_GIGABYTES);
+            usedData.remove(0);
+        }
+
+        xData.clear();
+        for (int i = 0; i < usedData.size(); i++)
+        {
+            xData.add((double) i);
+        }
+
+        double max = 0;
+        for (double d : usedData)
+        {
+            if (d > max)
+            {
+                max = d;
+            }
+        }
+
+        double scale;
+        String unit;
+        if (max >= Constants.BYTES_TO_GIGABYTES)
+        {
+            scale = Constants.BYTES_TO_GIGABYTES;
+            unit = "GB";
         }
         else
         {
-            return String.format("%.2f MB", bytes / (double) Constants.BYTES_TO_MEGABYTES);
+            scale = Constants.BYTES_TO_MEGABYTES;
+            unit = "MB";
         }
+
+        final List<Double> scaled = new ArrayList<>(usedData.size());
+        for (double d : usedData)
+        {
+            scaled.add(d / scale);
+        }
+
+        chart.setYAxisTitle("Memory (" + unit + ")");
+        chart.updateXYSeries("Used", xData, scaled, null);
+
+        revalidate();
+        repaint();
     }
 
     @Override
@@ -135,3 +151,4 @@ public class MemoryUsage extends javax.swing.JPanel
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }
+
