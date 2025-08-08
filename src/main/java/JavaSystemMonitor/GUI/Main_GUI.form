@@ -69,6 +69,15 @@
             </Constraint>
           </Constraints>
         </Component>
+        <Component class="JavaSystemMonitor.GUI.NetworkUsage" name="networkUsage1">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Network Usage">
+                <Property name="tabTitle" type="java.lang.String" value="Network Usage"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>
