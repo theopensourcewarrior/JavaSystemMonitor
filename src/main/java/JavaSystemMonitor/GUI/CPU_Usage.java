@@ -79,6 +79,8 @@ public class CPU_Usage extends javax.swing.JPanel
         chart.setYAxisTitle("CPU Usage (%)");
         chart.setXAxisTitle("Seconds");
 
+        chart.getStyler().setLegendVisible(coreCount <= 8);
+
         for (int i = 0; i < coreCount; i++)
         {
             chart.addSeries("Core " + i, new double[]
