@@ -20,6 +20,7 @@ public class MemoryUsage extends javax.swing.JPanel
     private static final String USED_MEMORY = "Used Memory";
 
     private transient PieChart memoryPieChart;
+
     private final Timer timer;
 
     @SuppressWarnings("this-escape")
@@ -77,7 +78,6 @@ public class MemoryUsage extends javax.swing.JPanel
         repaint();
     }
 
-    @Override
     public void addNotify()
     {
         super.addNotify();

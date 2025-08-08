@@ -16,6 +16,7 @@ public class CPU_Usage extends javax.swing.JPanel
     private static final String CPU_USAGE_TITLE = "CPU Usage";
 
     private transient DialChart dial;
+
     private final Timer timer;
 
     @SuppressWarnings("this-escape")

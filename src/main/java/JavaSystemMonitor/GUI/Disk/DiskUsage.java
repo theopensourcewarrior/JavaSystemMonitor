@@ -6,10 +6,10 @@ import java.nio.file.FileStore;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import javax.swing.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
+import javax.swing.Timer;
 
 public class DiskUsage extends javax.swing.JPanel
 {
