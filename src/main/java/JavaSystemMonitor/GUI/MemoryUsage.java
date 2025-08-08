@@ -78,6 +78,7 @@ public class MemoryUsage extends javax.swing.JPanel
         repaint();
     }
 
+    @Override
     public void addNotify()
     {
         super.addNotify();
