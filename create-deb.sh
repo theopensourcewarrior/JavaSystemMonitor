@@ -22,9 +22,11 @@ PKG_DIR="pkg"
 DEBIAN_DIR="$PKG_DIR/DEBIAN"
 INSTALL_DIR="$PKG_DIR/usr/lib/${APP_NAME}"
 BIN_DIR="$PKG_DIR/usr/bin"
+DESKTOP_DIR="$PKG_DIR/usr/share/applications"
+ICON_DIR="$PKG_DIR/usr/share/pixmaps"
 
 rm -rf "$PKG_DIR"
-mkdir -p "$DEBIAN_DIR" "$INSTALL_DIR" "$BIN_DIR"
+mkdir -p "$DEBIAN_DIR" "$INSTALL_DIR" "$BIN_DIR" "$DESKTOP_DIR" "$ICON_DIR"
 
 # Copy application JAR
 cp "$JAR_PATH" "$INSTALL_DIR/${APP_NAME}.jar"
@@ -35,6 +37,22 @@ cat > "$BIN_DIR/jsm" <<'LAUNCHER'
 exec java -jar /usr/lib/JavaSystemMonitor/JavaSystemMonitor.jar "$@"
 LAUNCHER
 chmod +x "$BIN_DIR/jsm"
+
+# Desktop entry
+cat > "$DESKTOP_DIR/javasystemmonitor.desktop" <<'DESKTOP'
+[Desktop Entry]
+Type=Application
+Name=Java System Monitor
+Exec=jsm
+Icon=javasystemmonitor
+Categories=Utility;
+Terminal=false
+DESKTOP
+chmod 644 "$DESKTOP_DIR/javasystemmonitor.desktop"
+
+# Icon
+cp readme/JavaSystemMonitor.png "$ICON_DIR/javasystemmonitor.png"
+chmod 644 "$ICON_DIR/javasystemmonitor.png"
 
 # Control file
 cat > "$DEBIAN_DIR/control" <<CONTROL
