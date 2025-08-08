@@ -6,9 +6,13 @@ A cross platform utility to monitor system performance.
 ![](https://raw.githubusercontent.com/theopensourcewarrior/JavaSystemMonitor/master/readme/JavaSystemMonitor2.png)
 
 ## How to Build
-This is a Java Maven Project, to build the project you will need Netbeans 10
+This project now uses Gradle. To build an executable JAR, run (requires Gradle installed):
+
+```
+gradle shadowJar
+```
 
 ## How to Run
 ```
-java -jar JavaSystemMonitor-1.0-SNAPSHOT-jar-with-dependencies.jar
+java -jar build/libs/JavaSystemMonitor-1.0-SNAPSHOT-all.jar
 ```
