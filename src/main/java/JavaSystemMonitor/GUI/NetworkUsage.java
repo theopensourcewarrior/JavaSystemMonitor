@@ -15,6 +15,7 @@ import org.knowm.xchart.style.markers.SeriesMarkers;
 
 public class NetworkUsage extends javax.swing.JPanel
 {
+
     private static final long serialVersionUID = 1L;
 
     private transient XYChart chart;
@@ -52,8 +53,20 @@ public class NetworkUsage extends javax.swing.JPanel
         chart = new XYChart(width, height);
         chart.setYAxisTitle("Data Rate (bps)");
         chart.setXAxisTitle("Seconds");
-        chart.addSeries("Download", new double[]{0}, new double[]{0}).setMarker(SeriesMarkers.NONE);
-        chart.addSeries("Upload", new double[]{0}, new double[]{0}).setMarker(SeriesMarkers.NONE);
+        chart.addSeries("Download", new double[]
+                {
+                    0
+        }, new double[]
+                {
+                    0
+        }).setMarker(SeriesMarkers.NONE);
+        chart.addSeries("Upload", new double[]
+                {
+                    0
+        }, new double[]
+                {
+                    0
+        }).setMarker(SeriesMarkers.NONE);
 
         final XChartPanel<XYChart> chartPanel = new XChartPanel<>(chart);
         add(chartPanel, BorderLayout.CENTER);
@@ -312,15 +325,17 @@ public class NetworkUsage extends javax.swing.JPanel
     private void initComponents()
     {
 
+        setBorder(javax.swing.BorderFactory.createTitledBorder("Network Utilization"));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 390, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 275, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
