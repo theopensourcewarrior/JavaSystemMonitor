@@ -11,11 +11,14 @@ import org.knowm.xchart.XChartPanel;
 public class CPU_Usage extends javax.swing.JPanel
 {
 
+    private static final long serialVersionUID = 1L;
+
     private static final String CPU_USAGE_TITLE = "CPU Usage";
 
-    private DialChart dial;
+    private transient DialChart dial;
     private final Timer timer;
 
+    @SuppressWarnings("this-escape")
     public CPU_Usage()
     {
         initComponents();
@@ -30,11 +33,11 @@ public class CPU_Usage extends javax.swing.JPanel
     {
         dial = new DialChart(width, height);
 
-        dial.addSeries(CPU_USAGE_TITLE, 0);
+        dial.addSeries(CPU_USAGE_TITLE, 0, CPU_USAGE_TITLE);
 
         setLayout(new BorderLayout());
 
-        final XChartPanel chartPanel = new XChartPanel(dial);
+        final XChartPanel<DialChart> chartPanel = new XChartPanel<>(dial);
 
         add(chartPanel, BorderLayout.CENTER);
 
@@ -45,10 +48,10 @@ public class CPU_Usage extends javax.swing.JPanel
         final OperatingSystemMXBean mbean
                 = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 
-        final double CPU_Load = Math.min(1.0, Math.max(0.0, mbean.getSystemCpuLoad()));
+        final double CPU_Load = Math.min(1.0, Math.max(0.0, mbean.getCpuLoad()));
 
         dial.removeSeries(CPU_USAGE_TITLE);
-        dial.addSeries(CPU_USAGE_TITLE, CPU_Load);
+        dial.addSeries(CPU_USAGE_TITLE, CPU_Load, CPU_USAGE_TITLE);
 
         repaint();
     }
@@ -67,7 +70,10 @@ public class CPU_Usage extends javax.swing.JPanel
         super.removeNotify();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings(
+            {
+                "unchecked", "this-escape"
+            })
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 

@@ -1,0 +1,52 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'com.mycompany'
+version = '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+compileJava {
+    options.compilerArgs << '-Xlint'
+}
+
+application {
+    mainClass = 'JavaSystemMonitor.Main'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.knowm.xchart:xchart:3.8.8'
+}
+
+tasks.register('shadowJar', Jar) {
+    archiveClassifier.set('all')
+    from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    manifest {
+        attributes 'Main-Class': application.mainClass
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// Ensure the shadow JAR is built when invoking the standard 'build' task
+tasks.named('build') {
+    dependsOn tasks.named('shadowJar')
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': application.mainClass
+    }
+}
