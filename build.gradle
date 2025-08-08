@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'com.mycompany'
@@ -24,9 +23,22 @@ dependencies {
     implementation 'org.knowm.xchart:xchart:3.8.8'
 }
 
-shadowJar {
+tasks.register('shadowJar', Jar) {
     archiveClassifier.set('all')
-    mergeServiceFiles()
+    from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    manifest {
+        attributes 'Main-Class': application.mainClass
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// Ensure the shadow JAR is built when invoking the standard 'build' task
+tasks.named('build') {
+    dependsOn tasks.named('shadowJar')
 }
 
 jar {
