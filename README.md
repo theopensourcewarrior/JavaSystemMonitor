@@ -16,3 +16,13 @@ gradle shadowJar
 ```
 java -jar build/libs/JavaSystemMonitor-1.0-SNAPSHOT-all.jar
 ```
+
+## Create a Debian Package
+To build a `.deb` package and install it on Debian/Ubuntu systems, run:
+
+```
+./create-deb.sh
+sudo dpkg -i JavaSystemMonitor_1.0-SNAPSHOT.deb
+```
+This installs a `jsm` command that launches the monitor.
+It also adds a desktop entry so you can launch Java System Monitor from your application menu.
