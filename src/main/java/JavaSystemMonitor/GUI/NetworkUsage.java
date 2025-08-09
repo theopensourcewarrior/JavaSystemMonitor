@@ -53,14 +53,14 @@ public class NetworkUsage extends javax.swing.JPanel
         chart = new XYChart(width, height);
         chart.setYAxisTitle("Data Rate (bps)");
         chart.setXAxisTitle("Seconds");
-        chart.addSeries("Download", new double[]
+        chart.addSeries("Down", new double[]
                 {
                     0
         }, new double[]
                 {
                     0
         }).setMarker(SeriesMarkers.NONE);
-        chart.addSeries("Upload", new double[]
+        chart.addSeries("Up", new double[]
                 {
                     0
         }, new double[]
@@ -150,8 +150,8 @@ public class NetworkUsage extends javax.swing.JPanel
         }
 
         chart.setYAxisTitle("Data Rate (" + unit + ")");
-        chart.updateXYSeries("Download", xData, scaledDownload, null);
-        chart.updateXYSeries("Upload", xData, scaledUpload, null);
+        chart.updateXYSeries("Down", xData, scaledDownload, null);
+        chart.updateXYSeries("Up", xData, scaledUpload, null);
 
         revalidate();
         repaint();
