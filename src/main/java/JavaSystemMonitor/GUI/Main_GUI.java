@@ -2,6 +2,9 @@ package JavaSystemMonitor.GUI;
 
 import JavaSystemMonitor.GUI.Disk.DiskUsage;
 import java.awt.GridLayout;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 public class Main_GUI extends javax.swing.JFrame
 {
@@ -13,12 +16,24 @@ public class Main_GUI extends javax.swing.JFrame
     {
         initComponents();
 
-        setLayout(new GridLayout(2, 2));
+        // Use a single column layout so the four panels are stacked vertically
+        setLayout(new GridLayout(4, 1));
+
+        // Create a menu bar with a “File” menu containing an Exit item
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem exitItem = new JMenuItem("Exit");
+        exitItem.addActionListener(e -> System.exit(0));
+        fileMenu.add(exitItem);
+        menuBar.add(fileMenu);
+
+        setJMenuBar(menuBar);
+
         add(new CPU_Usage());
         add(new MemoryUsage());
         add(new NetworkUsage());
         add(new DiskUsage());
-
     }
 
     @SuppressWarnings(
@@ -36,11 +51,11 @@ public class Main_GUI extends javax.swing.JFrame
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 780, Short.MAX_VALUE)
+            .addGap(0, 660, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 504, Short.MAX_VALUE)
+            .addGap(0, 772, Short.MAX_VALUE)
         );
 
         pack();
