@@ -27,6 +27,7 @@ public class DiskEntry extends JPanel {
         PieChart chart = new PieChart(width, height);
         chart.setTitle(store.name());
         chart.getStyler().setLegendVisible(true);
+        chart.getStyler().setLabelsVisible(true);
         chart.getStyler().setLabelType(PieStyler.LabelType.NameAndValue);
         chart.getStyler().setDecimalPattern("#0.0 GB");
 
