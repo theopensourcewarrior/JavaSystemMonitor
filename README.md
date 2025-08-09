@@ -26,3 +26,13 @@ sudo dpkg -i JavaSystemMonitor_1.0-SNAPSHOT.deb
 ```
 This installs a `jsm` command that launches the monitor.
 It also adds a desktop entry so you can launch Java System Monitor from your application menu.
+
+## Create an RPM Package
+To build a `.rpm` package and install it on RPM-based systems, run:
+
+```
+./create-rpm.sh
+sudo rpm -i rpmbuild/RPMS/noarch/javasystemmonitor-1.0-SNAPSHOT-1.noarch.rpm
+```
+This installs a `jsm` command that launches the monitor.
+It also adds a desktop entry so you can launch Java System Monitor from your application menu.
