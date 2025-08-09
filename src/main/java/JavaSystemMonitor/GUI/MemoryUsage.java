@@ -44,6 +44,7 @@ public class MemoryUsage extends javax.swing.JPanel
         chart = new XYChart(width, height);
         chart.setYAxisTitle("Memory");
         chart.setXAxisTitle("Seconds");
+        chart.getStyler().setLegendVisible(false);
         chart.addSeries("Used", new double[]
                 {
                     0
