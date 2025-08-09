@@ -26,6 +26,8 @@ public class MemoryUsage extends javax.swing.JPanel
 
     private final transient List<Double> usedData = new ArrayList<>();
 
+    private final transient List<Double> totalData = new ArrayList<>();
+
     @SuppressWarnings("this-escape")
     public MemoryUsage()
     {
@@ -52,6 +54,13 @@ public class MemoryUsage extends javax.swing.JPanel
                 {
                     0
         }).setMarker(SeriesMarkers.NONE);
+        chart.addSeries("Total", new double[]
+                {
+                    0
+        }, new double[]
+                {
+                    0
+        }).setMarker(SeriesMarkers.NONE);
 
         final XChartPanel<XYChart> chartPanel = new XChartPanel<>(chart);
         add(chartPanel, BorderLayout.CENTER);
@@ -67,9 +76,11 @@ public class MemoryUsage extends javax.swing.JPanel
         final long usedMemory = totalMemory - freeMemory;
 
         usedData.add((double) usedMemory);
+        totalData.add((double) totalMemory);
         if (usedData.size() > HISTORY_SECONDS)
         {
             usedData.remove(0);
+            totalData.remove(0);
         }
 
         xData.clear();
@@ -78,18 +89,9 @@ public class MemoryUsage extends javax.swing.JPanel
             xData.add((double) i);
         }
 
-        double max = 0;
-        for (double d : usedData)
-        {
-            if (d > max)
-            {
-                max = d;
-            }
-        }
-
         double scale;
         String unit;
-        if (max >= Constants.BYTES_TO_GIGABYTES)
+        if (totalMemory >= Constants.BYTES_TO_GIGABYTES)
         {
             scale = Constants.BYTES_TO_GIGABYTES;
             unit = "GB";
@@ -100,14 +102,17 @@ public class MemoryUsage extends javax.swing.JPanel
             unit = "MB";
         }
 
-        final List<Double> scaled = new ArrayList<>(usedData.size());
-        for (double d : usedData)
+        final List<Double> scaledUsed = new ArrayList<>(usedData.size());
+        final List<Double> scaledTotal = new ArrayList<>(totalData.size());
+        for (int i = 0; i < usedData.size(); i++)
         {
-            scaled.add(d / scale);
+            scaledUsed.add(usedData.get(i) / scale);
+            scaledTotal.add(totalData.get(i) / scale);
         }
 
         chart.setYAxisTitle("Memory (" + unit + ")");
-        chart.updateXYSeries("Used", xData, scaled, null);
+        chart.updateXYSeries("Used", xData, scaledUsed, null);
+        chart.updateXYSeries("Total", xData, scaledTotal, null);
 
         revalidate();
         repaint();
