@@ -14,3 +14,4 @@ bin
 gradle/
 gradlew
 gradlew.bat
+.aider*

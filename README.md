@@ -26,3 +26,16 @@ sudo dpkg -i JavaSystemMonitor_1.0-SNAPSHOT.deb
 ```
 This installs a `jsm` command that launches the monitor.
 It also adds a desktop entry so you can launch Java System Monitor from your application menu.
+
+## Checking for Dependency Updates
+
+To check for for dependency updates using the `com.github.ben-manes.versions` plugin:
+
+1. Run the following command in your terminal:
+   ```
+   gradle dependencyUpdates
+   ```
+
+2. This will generate a report listing available updates for your dependencies.
+
+3. Review the report and update the `build.gradle` file as needed to use newer versions of dependencies.
